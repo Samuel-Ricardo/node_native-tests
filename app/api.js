@@ -2,7 +2,7 @@ import { once } from 'node:events'
 import {createServer} from 'node:http'
 import { DEFAULT_USER, JWT_KEY } from './config.js'
 import { USER_INVALID_ERROR } from './error/index.js'
-
+import JWT from 'jsonwebtoken'
 
 async function loginRoute(request, response){
   const {user, password} = JSON.parse(await once(request, 'data'))
@@ -12,6 +12,7 @@ async function loginRoute(request, response){
     response.end(JSON.stringify(USER_INVALID_ERROR))
     return;
   }
+
 
   const token = JWT.sign({user, message: 'Hello World :D'}, JWT_KEY)
 
