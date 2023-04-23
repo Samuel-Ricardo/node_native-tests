@@ -1,6 +1,7 @@
 import { describe, before, after, it } from 'node:test'
 import { deepStrictEqual, strictEqual } from 'node:assert'
 import { USER_INVALID_ERROR } from './error/login_errors.js'
+import { warn } from 'node:console'
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -23,7 +24,7 @@ describe('API Workflow', () => {
   it ('should receive not authorized given wrong user and password', async () => {
     
     const data = {
-      user: 'Wrong Username'
+      user: 'Wrong Username',
       password: 'Wrong Password'
     }
 
