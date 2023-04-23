@@ -1,9 +1,7 @@
 import { describe, before, after, it } from 'node:test'
-import { deepStrictEqual, strictEqual } from 'node:assert'
+import { deepStrictEqual, ok } from 'node:assert'
 import { USER_INVALID_ERROR } from './error/login_errors.js'
-import { warn } from 'node:console'
-
-const BASE_URL = 'http://localhost:3000'
+import { BASE_URL } from './config.js'
 
 // E2E Test
 describe('API Workflow', () => {
@@ -28,12 +26,14 @@ describe('API Workflow', () => {
       password: 'Wrong Password'
     }
 
+    console.log({data})
+
     const request = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
-      body: JSON.stringfy(data)
+      body: JSON.stringify(data)
     })
 
-    strictEqual(request.status, 401) 
+    deepStrictEqual(request.status, 401) 
   
     const response = await request.json();
 
