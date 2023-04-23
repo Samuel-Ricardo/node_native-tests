@@ -4,7 +4,8 @@ services:
   
   app:
     build: .
-    #entrypoint: .docker/entrypoint.sh
+    #entrypoint: ./.docker/entrypoint.sh
+    entrypoint: ["npm", "run", "test:dev"]
     ports:
       - 3000:3000
     volumes:
