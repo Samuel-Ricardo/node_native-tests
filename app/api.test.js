@@ -2,6 +2,9 @@ import { describe, before, after, it } from 'node:test'
 import { deepStrictEqual, ok, strictEqual } from 'node:assert'
 import { INVALID_TOKEN, USER_INVALID_ERROR } from './error/login_errors.js'
 import { BASE_URL, DEFAULT_USER } from './config.js'
+import { WELCOME } from './success/index.js'
+
+let _global_token= ''
 
 // E2E Test
 describe('API Workflow', () => {
@@ -48,6 +51,7 @@ describe('API Workflow', () => {
     strictEqual(request.status, 200)
     const response = await request.json()
     ok(response.token, 'Token should be present')
+    _global_token = response.token
   })
 
   it('Should not be able to access private data without a token', async () => {
@@ -60,5 +64,16 @@ describe('API Workflow', () => {
     deepStrictEqual(request.status, 400)
     const response =  await request.json()
     deepStrictEqual(response, INVALID_TOKEN)
+  })
+
+  it ("Should be allowed to access private data with a valid token", async () => {
+    const request = await fetch(`${BASE_URL}/`, {
+      method: 'GET',
+      headers: { authorization: _global_token }
+    })
+
+    deepStrictEqual(request.status, 200)
+    const response = await request.json()
+    deepStrictEqual(response, WELCOME)
   })
 })
